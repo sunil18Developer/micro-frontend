@@ -1,11 +1,14 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const {ModuleFederationPlugin} = require("webpack").container;
+const { ModuleFederationPlugin } = require("webpack").container;
 // const ExternalTemplateRemotesPlugin = require("external-remotes-plugin");
 const path = require("path");
 
 module.exports = {
   entry: "./src/index",
   mode: "development",
+  stats: {
+    errorDetails: true,
+  },
   devServer: {
     static: path.join(__dirname, "dist"),
     port: 3001,
@@ -31,16 +34,41 @@ module.exports = {
       remotes: {
         app2: "app2@http://localhost:3002/remoteEntry.js",
       },
-      shared: {'react': {singleton: true}, "react-dom": {singleton: true}},
+      exposes: {
+        "./store": path.resolve(__dirname, "./src/store/index"),
+        "./rate": path.resolve(__dirname, "./src/store/reducers/rate"),
+        "./transaction": path.resolve(
+          __dirname,
+          "./src/store/reducers/transaction"
+        ),
+      },
+      shared: {
+        "react": { singleton: true },
+        "react-dom": { singleton: true },
+        "react-redux": { singleton: true },
+        "redux": { singleton: true },
+      },
     }),
     new ModuleFederationPlugin({
       name: "app3",
       remotes: {
         app3: "app3@http://localhost:3003/remoteEntry.js",
       },
-      shared: {'react': {singleton: true}, "react-dom": {singleton: true}},
+      exposes: {
+        "./store": path.resolve(__dirname, "./store/index"),
+        "./rate": path.resolve(__dirname, "./store/reducers/rate"),
+        "./transaction": path.resolve(
+          __dirname,
+          "./store/reducers/transaction"
+        ),
+      },
+      shared: {
+        "react": { singleton: true },
+        "react-dom": { singleton: true },
+        "react-redux": { singleton: true },
+        "redux": { singleton: true },
+      },
     }),
-    // new ExternalTemplateRemotesPlugin(),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),

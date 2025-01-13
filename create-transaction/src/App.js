@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { MenuItem, Select, FormControl, InputLabel, Button, Box, TextField, Typography } from "@mui/material";
+import { useSelector } from "react-redux"
+import { selectRates } from "host/rate";
 
 const CurrencyTransactionForm = () => {
   const [baseCurrency, setBaseCurrency] = useState("");
@@ -7,6 +9,10 @@ const CurrencyTransactionForm = () => {
   const [exchangeRate, setExchangeRate] = useState("");
   const [amountInBase, setAmountInBase] = useState("");
   const [amountInTarget, setAmountInTarget] = useState("");
+
+
+  const rates = useSelector(selectRates)
+  console.log(rates)
 
   const currencies = ["USD", "EUR", "GBP", "JPY", "INR", "CAD"];
 

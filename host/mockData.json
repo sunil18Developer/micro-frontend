@@ -1,0 +1,181 @@
+{
+    "currencies": {
+      "USD": {
+        "baseCurrency": "USD",
+        "timestamp": "2025-01-13T10:00:00Z",
+        "exchangeRates": {
+          "INR": 82.50,
+          "EUR": 0.92,
+          "GBP": 0.75,
+          "JPY": 110.25,
+          "AUD": 1.35,
+          "CAD": 1.25,
+          "CNY": 6.75,
+          "AED": 3.67,
+          "SGD": 1.30,
+          "ZAR": 14.50
+        }
+      },
+      "EUR": {
+        "baseCurrency": "EUR",
+        "timestamp": "2025-01-13T10:00:00Z",
+        "exchangeRates": {
+          "USD": 1.09,
+          "INR": 89.67,
+          "GBP": 0.81,
+          "JPY": 119.90,
+          "AUD": 1.47,
+          "CAD": 1.36,
+          "CNY": 7.34,
+          "AED": 4.00,
+          "SGD": 1.41,
+          "ZAR": 15.75
+        }
+      },
+      "INR": {
+        "baseCurrency": "INR",
+        "timestamp": "2025-01-13T10:00:00Z",
+        "exchangeRates": {
+          "USD": 0.0121,
+          "EUR": 0.0112,
+          "GBP": 0.0091,
+          "JPY": 1.34,
+          "AUD": 0.0164,
+          "CAD": 0.0151,
+          "CNY": 0.082,
+          "AED": 0.0445,
+          "SGD": 0.0158,
+          "ZAR": 0.176
+        }
+      },
+      "GBP": {
+        "baseCurrency": "GBP",
+        "timestamp": "2025-01-13T10:00:00Z",
+        "exchangeRates": {
+          "USD": 1.33,
+          "INR": 110.50,
+          "EUR": 1.23,
+          "JPY": 158.30,
+          "AUD": 1.80,
+          "CAD": 1.67,
+          "CNY": 9.06,
+          "AED": 5.25,
+          "SGD": 1.85,
+          "ZAR": 19.45
+        }
+      },
+      "JPY": {
+        "baseCurrency": "JPY",
+        "timestamp": "2025-01-13T10:00:00Z",
+        "exchangeRates": {
+          "USD": 0.0091,
+          "INR": 0.073,
+          "EUR": 0.0083,
+          "GBP": 0.0063,
+          "AUD": 0.0114,
+          "CAD": 0.0105,
+          "CNY": 0.057,
+          "AED": 0.033,
+          "SGD": 0.0116,
+          "ZAR": 0.123
+        }
+      },
+      "AUD": {
+        "baseCurrency": "AUD",
+        "timestamp": "2025-01-13T10:00:00Z",
+        "exchangeRates": {
+          "USD": 0.74,
+          "INR": 61.11,
+          "EUR": 0.63,
+          "GBP": 0.56,
+          "JPY": 87.52,
+          "CAD": 1.10,
+          "CNY": 5.78,
+          "AED": 3.72,
+          "SGD": 1.34,
+          "ZAR": 14.25
+        }
+      },
+      "CAD": {
+        "baseCurrency": "CAD",
+        "timestamp": "2025-01-13T10:00:00Z",
+        "exchangeRates": {
+          "USD": 0.80,
+          "INR": 66.87,
+          "EUR": 0.74,
+          "GBP": 0.60,
+          "JPY": 82.99,
+          "AUD": 0.91,
+          "CNY": 5.24,
+          "AED": 3.16,
+          "SGD": 1.23,
+          "ZAR": 12.96
+        }
+      },
+      "CNY": {
+        "baseCurrency": "CNY",
+        "timestamp": "2025-01-13T10:00:00Z",
+        "exchangeRates": {
+          "USD": 0.15,
+          "INR": 12.09,
+          "EUR": 0.14,
+          "GBP": 0.11,
+          "JPY": 17.52,
+          "AUD": 0.17,
+          "CAD": 0.19,
+          "AED": 0.12,
+          "SGD": 0.19,
+          "ZAR": 1.76
+        }
+      },
+      "AED": {
+        "baseCurrency": "AED",
+        "timestamp": "2025-01-13T10:00:00Z",
+        "exchangeRates": {
+          "USD": 0.27,
+          "INR": 22.57,
+          "EUR": 0.23,
+          "GBP": 0.19,
+          "JPY": 29.91,
+          "AUD": 0.27,
+          "CAD": 0.32,
+          "CNY": 8.33,
+          "SGD": 0.34,
+          "ZAR": 4.56
+        }
+      },
+      "SGD": {
+        "baseCurrency": "SGD",
+        "timestamp": "2025-01-13T10:00:00Z",
+        "exchangeRates": {
+          "USD": 0.77,
+          "INR": 63.14,
+          "EUR": 0.71,
+          "GBP": 0.54,
+          "JPY": 86.39,
+          "AUD": 0.74,
+          "CAD": 0.81,
+          "CNY": 5.23,
+          "AED": 2.91,
+          "ZAR": 10.69
+        }
+      },
+      "ZAR": {
+        "baseCurrency": "ZAR",
+        "timestamp": "2025-01-13T10:00:00Z",
+        "exchangeRates": {
+          "USD": 0.069,
+          "INR": 5.68,
+          "EUR": 0.061,
+          "GBP": 0.051,
+          "JPY": 8.13,
+          "AUD": 0.070,
+          "CAD": 0.077,
+          "CNY": 0.56,
+          "AED": 0.22,
+          "SGD": 0.094
+        }
+      }
+    }
+  }
+  

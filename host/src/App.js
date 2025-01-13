@@ -1,7 +1,7 @@
 import RemoteApp from "app2/App";
 import RemoteApp3 from "app3/App";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   TextField,
@@ -14,9 +14,27 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { setExchangeRates } from "./store/reducers/rate";
 
 const TransactionDashboard = () => {
-  // Sample transaction data
+  const dispatch = useDispatch()
+  useEffect(() => {
+    fetch('http://localhost:3000/currencies')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        dispatch(setExchangeRates(data))
+      })
+      .catch(err => {
+        alert(err.message);
+      });
+  }, []);
+
   const [transactions] = useState([
     {
       id: 1,
@@ -52,7 +70,6 @@ const TransactionDashboard = () => {
 
   const [searchText, setSearchText] = useState("");
 
-  // Filter transactions based on Transaction Ref or Description
   const filteredTransactions = transactions.filter(
     (transaction) =>
       transaction.transactionRef
