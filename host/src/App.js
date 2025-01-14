@@ -13,60 +13,33 @@ import {
   TableRow,
   Paper,
   Typography,
+  Button,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { setExchangeRates } from "./store/reducers/rate";
+import { selectTransactions } from "./store/reducers/transaction";
+import { setTransaction } from "./store/reducers/transaction";
 
 const TransactionDashboard = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
-    fetch('http://localhost:3000/currencies')
-      .then(response => {
+    fetch("http://localhost:3000/currencies")
+      .then((response) => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         return response.json();
       })
-      .then(data => {
-        dispatch(setExchangeRates(data))
+      .then((data) => {
+        dispatch(setExchangeRates(data));
       })
-      .catch(err => {
+      .catch((err) => {
         alert(err.message);
       });
   }, []);
 
-  const [transactions] = useState([
-    {
-      id: 1,
-      transactionRef: "TRX12345",
-      description: "Payment for invoice #5678",
-      baseCurrency: "USD",
-      targetCurrency: "EUR",
-      exchangeRate: 0.92,
-      amountInBase: 1000,
-      amountInTarget: 920,
-    },
-    {
-      id: 2,
-      transactionRef: "TRX67890",
-      description: "Travel expenses",
-      baseCurrency: "INR",
-      targetCurrency: "JPY",
-      exchangeRate: 1.4,
-      amountInBase: 7000,
-      amountInTarget: 9800,
-    },
-    {
-      id: 3,
-      transactionRef: "TRX11223",
-      description: "Office supplies purchase",
-      baseCurrency: "GBP",
-      targetCurrency: "USD",
-      exchangeRate: 1.25,
-      amountInBase: 200,
-      amountInTarget: 250,
-    },
-  ]);
+  const transactions = useSelector(selectTransactions);
 
   const [searchText, setSearchText] = useState("");
 
@@ -77,6 +50,18 @@ const TransactionDashboard = () => {
         .includes(searchText.toLowerCase()) ||
       transaction.description.toLowerCase().includes(searchText.toLowerCase())
   );
+
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+
+  const handleRowSelection = (index, item) => {
+    if (selectedIndex === index) {
+      dispatch(setTransaction({}))
+      setSelectedIndex(-1)
+    } else {
+      setSelectedIndex(index);
+      dispatch(setTransaction(item));
+    }
+  };
 
   return (
     <>
@@ -119,11 +104,14 @@ const TransactionDashboard = () => {
                 <TableCell>
                   <strong>Amount in Target</strong>
                 </TableCell>
+                <TableCell>
+                  <strong>action (select)</strong>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {filteredTransactions.length > 0 ? (
-                filteredTransactions.map((transaction) => (
+                filteredTransactions.map((transaction, index) => (
                   <TableRow key={transaction.id}>
                     <TableCell>{transaction.transactionRef}</TableCell>
                     <TableCell>{transaction.description}</TableCell>
@@ -132,6 +120,15 @@ const TransactionDashboard = () => {
                     <TableCell>{transaction.exchangeRate}</TableCell>
                     <TableCell>{transaction.amountInBase}</TableCell>
                     <TableCell>{transaction.amountInTarget}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        color={selectedIndex === index ? "primary" : "default"}
+                        onClick={() => handleRowSelection(index, transaction)}
+                      >
+                        {selectedIndex === index ? "Selected" : "Select"}
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))
               ) : (
@@ -145,8 +142,17 @@ const TransactionDashboard = () => {
           </Table>
         </TableContainer>
       </Box>
-      <RemoteApp />
-      <RemoteApp3 />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "flex-start",
+          justifyContent: "flex-start",
+        }}
+      >
+        <RemoteApp />
+        <RemoteApp3 />
+      </div>
     </>
   );
 };

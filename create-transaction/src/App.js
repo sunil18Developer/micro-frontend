@@ -1,39 +1,53 @@
-import React, { useState } from "react";
-import { MenuItem, Select, FormControl, InputLabel, Button, Box, TextField, Typography } from "@mui/material";
-import { useSelector } from "react-redux"
+import React, { useState, useEffect } from "react";
+import {
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  Button,
+  Box,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import { selectRates } from "host/rate";
+import { addTransaction } from "host/transaction";
 
 const CurrencyTransactionForm = () => {
+  const [transactionRef, setTransactionRef] = useState("");
+  const [description, setDescription] = useState("");
   const [baseCurrency, setBaseCurrency] = useState("");
   const [targetCurrency, setTargetCurrency] = useState("");
   const [exchangeRate, setExchangeRate] = useState("");
   const [amountInBase, setAmountInBase] = useState("");
   const [amountInTarget, setAmountInTarget] = useState("");
 
+  const rates = useSelector(selectRates);
+  const dispatch = useDispatch();
 
-  const rates = useSelector(selectRates)
-  console.log(rates)
-
-  const currencies = ["USD", "EUR", "GBP", "JPY", "INR", "CAD"];
-
-  const calculateTargetAmount = () => {
-    if (exchangeRate && amountInBase) {
-      setAmountInTarget((amountInBase * exchangeRate).toFixed(2));
-    } else {
-      setAmountInTarget("");
-    }
-  };
+  const currencies = Object.keys(rates || {});
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({
-      baseCurrency,
-      targetCurrency,
-      exchangeRate,
-      amountInBase,
-      amountInTarget,
-    });
+    dispatch(
+      addTransaction({
+        transactionRef,
+        description,
+        baseCurrency,
+        targetCurrency,
+        exchangeRate,
+        amountInBase,
+        amountInTarget,
+      })
+    );
     alert("Transaction details submitted successfully!");
+    setTransactionRef("");
+    setDescription("");
+    setBaseCurrency("");
+    setTargetCurrency("");
+    setExchangeRate("");
+    setAmountInBase("");
+    setAmountInTarget("");
   };
 
   return (
@@ -52,83 +66,125 @@ const CurrencyTransactionForm = () => {
       <Typography variant="h5" align="center" gutterBottom>
         Currency Transaction
       </Typography>
-
-      {/* Base Currency Dropdown */}
-      <FormControl fullWidth>
-        <InputLabel id="baseCurrency-label">Base Currency</InputLabel>
-        <Select
-          labelId="baseCurrency-label"
-          id="baseCurrency"
-          value={baseCurrency}
-          onChange={(e) => setBaseCurrency(e.target.value)}
-          label="Base Currency"
-          required
-        >
-          {currencies.map((currency) => (
-            <MenuItem key={currency} value={currency}>
-              {currency}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
-      {/* Target Currency Dropdown */}
-      <FormControl fullWidth>
-        <InputLabel id="targetCurrency-label">Target Currency</InputLabel>
-        <Select
-          labelId="targetCurrency-label"
-          id="targetCurrency"
-          value={targetCurrency}
-          onChange={(e) => setTargetCurrency(e.target.value)}
-          label="Target Currency"
-          required
-        >
-          {currencies.map((currency) => (
-            <MenuItem key={currency} value={currency}>
-              {currency}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
-      {/* Exchange Rate Input */}
       <TextField
-        label="Exchange Rate"
-        type="number"
-        value={exchangeRate}
-        onChange={(e) => {
-          setExchangeRate(e.target.value);
-          calculateTargetAmount();
-        }}
+        label="Transaction Reference"
+        value={transactionRef}
+        onChange={(e) => setTransactionRef(e.target.value)}
         fullWidth
         required
       />
-
-      {/* Amount in Base Currency Input */}
       <TextField
-        label="Amount in Base Currency"
-        type="number"
-        value={amountInBase}
-        onChange={(e) => {
-          setAmountInBase(e.target.value);
-          calculateTargetAmount();
-        }}
+        label="Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
         fullWidth
+        multiline
+        rows={2}
         required
       />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "flex-start",
+        }}
+      >
+        <FormControl fullWidth>
+          <InputLabel id="baseCurrency-label">Base Currency</InputLabel>
+          <Select
+            labelId="baseCurrency-label"
+            id="baseCurrency"
+            value={baseCurrency}
+            onChange={(e) => setBaseCurrency(e.target.value)}
+            label="Base Currency"
+            required
+          >
+            {currencies.map((currency) => (
+              <MenuItem key={currency} value={currency}>
+                {currency}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel id="targetCurrency-label">Target Currency</InputLabel>
+          <Select
+            labelId="targetCurrency-label"
+            id="targetCurrency"
+            value={targetCurrency}
+            onChange={(e) => {
+              const selectedCurrency = e.target.value;
 
-      {/* Auto-calculated Amount in Target Currency */}
+              if (!baseCurrency) {
+                alert("Please select a base currency first.");
+                return;
+              }
+              const exchangeRateForSelectedCurrency =
+                rates[baseCurrency]?.exchangeRates[selectedCurrency];
+
+              console.log("dfajdlksj", exchangeRateForSelectedCurrency);
+
+              if (exchangeRateForSelectedCurrency) {
+                setTargetCurrency(selectedCurrency);
+                setExchangeRate(exchangeRateForSelectedCurrency);
+                if (amountInBase) {
+                  setAmountInTarget(
+                    (amountInBase * exchangeRateForSelectedCurrency).toFixed(2)
+                  );
+                }
+              } else {
+                alert("Exchange rate not available for the selected currency.");
+              }
+            }}
+            label="Target Currency"
+            required
+          >
+            {currencies.map((currency) => (
+              <MenuItem key={currency} value={currency}>
+                {currency}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "flex-start",
+        }}
+      >
+        <TextField
+          label="Amount in Base Currency"
+          type="number"
+          value={amountInBase}
+          onChange={(e) => {
+            const baseAmount = e.target.value;
+            setAmountInBase(baseAmount);
+            if (exchangeRate && baseAmount) {
+              setAmountInTarget((baseAmount * exchangeRate).toFixed(2));
+            } else {
+              setAmountInTarget("");
+            }
+          }}
+          fullWidth
+          required
+        />
+
+        <TextField
+          label="Exchange Rate"
+          type="number"
+          value={exchangeRate}
+          fullWidth
+        />
+      </div>
       <TextField
         label="Amount in Target Currency"
         type="number"
         value={amountInTarget}
         fullWidth
-        InputProps={{
-          readOnly: true,
-        }}
       />
-
-      {/* Submit Button */}
       <Button type="submit" variant="contained" color="primary" fullWidth>
         Submit
       </Button>

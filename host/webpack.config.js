@@ -55,11 +55,11 @@ module.exports = {
         app3: "app3@http://localhost:3003/remoteEntry.js",
       },
       exposes: {
-        "./store": path.resolve(__dirname, "./store/index"),
-        "./rate": path.resolve(__dirname, "./store/reducers/rate"),
+        "./store": path.resolve(__dirname, "./src/store/index"),
+        "./rate": path.resolve(__dirname, "./src/store/reducers/rate"),
         "./transaction": path.resolve(
           __dirname,
-          "./store/reducers/transaction"
+          "./src/store/reducers/transaction"
         ),
       },
       shared: {

@@ -25,10 +25,12 @@ module.exports = {
     ],
   },
   plugins: [
-    // To learn more about the usage of this plugin, please visit https://webpack.js.org/plugins/module-federation-plugin/
-    new ModuleFederationPlugin({
+     new ModuleFederationPlugin({
       name: 'app3',
       filename: 'remoteEntry.js',
+      remotes: {
+        host: "app1@http://localhost:3001/remoteEntry.js",
+      },
       exposes: {
         './App': './src/App',
       },

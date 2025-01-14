@@ -1,10 +1,13 @@
 import React from "react";
 import { Box, Typography, Paper, Stack } from "@mui/material";
+import { useSelector } from "react-redux";
+import { selectTransaction } from "host/transaction";
 
-const TransactionDetails = ({ transaction }) => {
-  if (!transaction) {
+const TransactionDetails = () => {
+  const transaction = useSelector(selectTransaction);
+  if (Object.keys(transaction).length === 0) {
     return (
-      <Box sx={{ padding: "20px", textAlign: "center" }}>
+      <Box sx={{ padding: "20px", textAlign: "left", width:"50%"}}>
         <Typography variant="h6" color="textSecondary">
           No transaction selected. Please select a transaction to view details.
         </Typography>
@@ -20,71 +23,48 @@ const TransactionDetails = ({ transaction }) => {
     exchangeRate,
     amountInBase,
     amountInTarget,
-    timestamp,
   } = transaction;
 
   return (
     <Box sx={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
-      <Typography variant="h4" gutterBottom align="center">
+      <Typography variant="h5"  align="center" gutterBottom>
         Transaction Details
       </Typography>
       <Paper elevation={3} sx={{ padding: "20px", marginTop: "20px" }}>
         <Stack spacing={3}>
-          {/* Transaction Ref */}
           <Box>
             <Typography variant="h6">
-              <strong>Transaction Ref:</strong> {transactionRef}
+              Transaction Ref:{transactionRef}
             </Typography>
           </Box>
-
-          {/* Description */}
           <Box>
-            <Typography variant="h6">
-              <strong>Description:</strong> {description}
-            </Typography>
+            <Typography variant="h6">Description:{description}</Typography>
           </Box>
-
-          {/* Base and Target Currency */}
           <Stack direction="row" spacing={2}>
             <Box>
-              <Typography variant="h6">
-                <strong>Base Currency:</strong> {baseCurrency}
-              </Typography>
+              <Typography variant="h6">Base Currency:{baseCurrency}</Typography>
             </Box>
             <Box>
               <Typography variant="h6">
-                <strong>Target Currency:</strong> {targetCurrency}
+                Target Currency:{targetCurrency}
               </Typography>
             </Box>
           </Stack>
-
-          {/* Exchange Rate */}
           <Box>
-            <Typography variant="h6">
-              <strong>Exchange Rate:</strong> {exchangeRate}
-            </Typography>
+            <Typography variant="h6">Exchange Rate:{exchangeRate}</Typography>
           </Box>
-
-          {/* Amounts */}
           <Stack direction="row" spacing={2}>
             <Box>
               <Typography variant="h6">
-                <strong>Amount in Base Currency:</strong> {amountInBase}
+                Amount in Base Currency:{amountInBase}
               </Typography>
             </Box>
             <Box>
               <Typography variant="h6">
-                <strong>Amount in Target Currency:</strong> {amountInTarget}
+                Amount in Target Currency:{amountInTarget}
               </Typography>
             </Box>
           </Stack>
-
-          {/* Timestamp */}
-          <Box>
-            <Typography variant="h6">
-              <strong>Transaction Timestamp:</strong> {new Date(timestamp).toLocaleString()}
-            </Typography>
-          </Box>
         </Stack>
       </Paper>
     </Box>
